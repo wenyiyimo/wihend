@@ -3,7 +3,7 @@
 import { Store } from 'vuex'
 import { State } from './store/store'
 import { AxiosInstance } from 'axios';
-
+import {App, defineComponent} from "vue";
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
@@ -14,7 +14,6 @@ declare module '@vue/runtime-core' {
   }
 }
 
-
 declare module '*.vue' {
   import { App, defineComponent } from 'vue'
   const component: ReturnType<typeof defineComponent> & {
@@ -22,3 +21,5 @@ declare module '*.vue' {
   }
   export default component
 }
+
+
