@@ -1,0 +1,77 @@
+<template>
+	<view class="n-flex-1 n-full-height n-bg-inverse n-position-relative">
+		<n-navbar :lefts="leftIcons" bgType="none" @leftAction="navLeftAction"></n-navbar>
+		<view style="margin-top: 66rpx;margin-left: 75rpx;">
+			<text class="n-weight-7" style="font-size: 60rpx;line-height: 84rpx;">欢迎来到nPro</text>
+			<text class="n-size-s n-color-third" style="line-height: 40rpx;margin-top: 6rpx;">未注册手机验证后自动登录</text>
+		</view>
+		<text class="n-size-ll n-color-text n-lh-ll n-weight-7" style="margin-left: 75rpx;margin-top: 100rpx;">手机号码</text>
+		<n-input v-model="phone" type="number" :maxlength="11" placeholder="请输入手机号" border="bottom" boxStyle="height:92rpx;margin-left:75rpx;margin-right:75rpx;margin-top:12rpx;"></n-input>
+		<text class="n-size-ll n-color-text n-lh-ll n-weight-7" style="margin-left: 75rpx;margin-top: 56rpx;">短信验证码</text>
+		<n-input v-model="code" type="number" :maxlength="6" placeholder="短信验证码" border="bottom" boxStyle="height:92rpx;margin-left:75rpx;margin-right:75rpx;margin-top:12rpx;">
+			<view slot="extra" class="n-border-left">
+				<n-button :text="second?(second+'s'):'获取'" textType="error" textSize="base" boxStyle="width:160rpx;height:72rpx;" @buttonClicked="toGetCode"></n-button>
+			</view>
+		</n-input>
+		<view class="n-flex-row n-justify-center" style="margin-top: 96rpx;">
+			<n-button text="登陆" textType="inverse" textSize="l" bgType="gradient" radius="ll" boxStyle="width:600rpx;height:100rpx;"></n-button>
+		</view>
+		<view class="n-position-absolute n-flex-column n-align-center" style="left: 0;width: 750rpx;bottom: 92rpx;">
+			<view class="n-flex-row n-align-center">
+				<view class="n-flex-row n-align-center n-justify-center n-bg-light" style="width: 100rpx;height: 100rpx;border-radius: 100rpx;margin-left: 24rpx;margin-right: 24rpx;">
+					<n-icon name="wechat" type="text" iconStyle="font-size:48rpx;"></n-icon>
+				</view>
+				<view class="n-flex-row n-align-center n-justify-center n-bg-light" style="width: 100rpx;height: 100rpx;border-radius: 100rpx;margin-left: 24rpx;margin-right: 24rpx;">
+					<n-icon name="douyin" type="text" iconStyle="font-size:48rpx;"></n-icon>
+				</view>
+			</view>
+			<view class="n-flex-row n-align-center" style="margin-top:60rpx;">
+				<n-icon :name="agreed?'check-solid':'circle'" :type="agreed?'text':'third'" size="ll" @iconClicked="toToggleAgree"></n-icon>
+				<text class="n-color-third n-size-s n-lh-s" style="margin-left: 12rpx;">同意且已阅读</text>
+				<text class="n-color-text n-size-s n-lh-s" @click="toPrivacy">《隐私协议》</text>
+				<text class="n-color-third n-size-s n-lh-s">和</text>
+				<text class="n-color-text n-size-s n-lh-s">《注册须知》</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import navHelper from '@/service/navHelper.js'
+	
+	export default {
+		mixins: [navHelper],
+		data() {
+			return {
+				phone: '',
+				code: '',
+				second: 0,
+				agreed: false
+			}
+		},
+		methods: {
+			toGetCode() {
+				if (this.second > 0) return;
+				this.second = 60
+				this.timer = setInterval(()=>{
+					this.second -= 1
+					if (this.second <= 0) {
+						this.second = 0
+						this.timer && clearInterval(this.timer)
+						this.timer = null
+					}
+				}, 1000)
+			},
+			toToggleAgree() {
+				this.agreed = !this.agreed
+			}
+		},
+		onUnload() {
+			this.timer && clearInterval(this.timer)
+		}
+	}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,129 @@
+<template>
+	<view class="n-flex-1 n-full-height n-bg-inverse n-position-relative">
+		<n-navbar :lefts="leftIcons" bgType="none" @leftAction="navLeftAction"></n-navbar>
+		<view style="margin-top: 66rpx;margin-left: 75rpx;">
+			<text class="n-weight-7" style="font-size: 60rpx;line-height: 84rpx;">您好，</text>
+			<text class="n-weight-7" style="font-size: 60rpx;line-height: 84rpx;margin-top: 6rpx;">欢迎来到nPro！</text>
+		</view>
+		<n-input v-model="phone" type="number" :maxlength="11" placeholder="请输入手机号" border="bottom-dark" boxStyle="height:92rpx;margin-left:75rpx;margin-right:75rpx;margin-top:32rpx;"></n-input>
+		<n-input v-model="password" placeholder="请输入密码" border="bottom-dark" boxStyle="height:92rpx;margin-left:75rpx;margin-right:75rpx;margin-top:32rpx;">
+			<view slot="extra" class="n-border-left">
+				<n-button text="忘记密码" textType="error" textSize="base" boxStyle="width:160rpx;height:72rpx;" @buttonClicked="toFindPw"></n-button>
+			</view>
+		</n-input>
+		<view class="n-flex-row n-align-center" style="margin-left: 75rpx;margin-top:32rpx;">
+			<n-icon :name="agreed?'check-solid':'circle'" :type="agreed?'primary':'third'" size="ll" @iconClicked="toToggleAgree"></n-icon>
+			<text class="n-color-third n-size-s n-lh-s" style="margin-left: 12rpx;">同意且已阅读</text>
+			<text class="n-color-primary n-size-s n-lh-s" @click="toPrivacy">《隐私协议》</text>
+			<text class="n-color-third n-size-s n-lh-s">和</text>
+			<text class="n-color-primary n-size-s n-lh-s">《注册须知》</text>
+		</view>
+		<view class="n-flex-row n-justify-center" style="margin-top: 66rpx;">
+			<n-button text="登陆" textType="inverse" textSize="l" bgType="gradient" radius="ll" boxStyle="height:86rpx;width:600rpx;" @buttonClicked="toLogin"></n-button>
+		</view>
+		<view class="n-flex-row n-align-center n-justify-center" style="margin-top: 30rpx;">
+			<view class="n-flex-row n-align-center n-justify-between" style="width: 600rpx;">
+				<text class="n-size-s n-color-third n-lh-s" @click="toCodeLogin">短信验证码登陆</text>
+				<text class="n-size-s n-color-third n-lh-s" @click="toRegister">新用户注册</text>
+			</view>
+		</view>
+		<view class="n-position-absolute n-flex-column n-align-center" style="left: 0;width: 750rpx;bottom: 92rpx;">
+			<text class="n-size-ss n-color-third n-lh-ss">使用第三方账号登陆</text>
+			<view class="n-flex-row n-align-center" style="margin-top: 60rpx;">
+				<view class="n-flex-row n-align-center n-justify-center n-bg-success" style="width: 100rpx;height: 100rpx;border-radius: 100rpx;margin-left: 24rpx;margin-right: 24rpx;">
+					<n-icon name="wechat" type="inverse" iconStyle="font-size:48rpx;"></n-icon>
+				</view>
+				<view class="n-flex-row n-align-center n-justify-center n-bg-primary" style="width: 100rpx;height: 100rpx;border-radius: 100rpx;margin-left: 24rpx;margin-right: 24rpx;">
+					<n-icon name="qq" type="inverse" iconStyle="font-size:48rpx;"></n-icon>
+				</view>
+				<view class="n-flex-row n-align-center n-justify-center n-bg-warning" style="width: 100rpx;height: 100rpx;border-radius: 100rpx;margin-left: 24rpx;margin-right: 24rpx;">
+					<n-icon name="douyin" type="inverse" iconStyle="font-size:48rpx;"></n-icon>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import navHelper from '@/service/navHelper.js'
+	
+	export default {
+		mixins: [navHelper],
+		data() {
+			return {
+				phone: '15727527694',
+				password: '12345678',
+				agreed: true
+			}
+		},
+		methods: {
+			toFindPw() {
+				uni.navigateTo({
+					url: '/pages/login/forgetPassword'
+				})
+			},
+			toLogin() {
+				if (!this.agreed) {
+					return
+				}
+				const data = {
+					username: this.phone,
+					passwd: this.password,
+          remember: this.agreed?1:0
+				}
+        
+        this.$store.dispatch("user/userLogin",data).then((res)=>{
+        	console.log(res);
+          if(res.response==0){
+            uni.navigateBack({
+              delta:1
+            })
+          }
+        }).catch(()=>{})
+        
+        return;
+				uniCloud.callFunction({
+					name: "user-center",
+					data: {
+						action: 'login',
+						params: data
+					},
+					success: (res) => {
+						console.log(res)
+						if (res.result.code == 0) {
+							this.$store.commit("user/set_has_loged_in", true)
+							uni.navigateBack({
+								delta: 1
+							})
+						} else {
+							
+						}
+					},
+					fail: (err) => {
+						console.log(err)
+					},
+					complete: () => {
+						
+					}
+				})
+			},
+			toCodeLogin() {
+				uni.navigateTo({
+					url: '/pages/login/phoneCodeLogin'
+				})
+			},
+			toRegister() {
+				uni.navigateTo({
+					url: '/pages/login/register'
+				})
+			},
+			toToggleAgree() {
+				this.agreed = !this.agreed
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>

@@ -1,0 +1,85 @@
+$xmains: (left: 'flex-start', center: 'center', right: 'flex-end', lr: 'space-between');
+$xcolumns: (top: 'flex-start', middle: 'center', bottom: 'flex-end');
+
+$ymains: (top: 'flex-start', middle: 'center', bottom: 'flex-end', tb: 'space-between');
+$ycolumns: (left: 'flex-start', center: 'center', right: 'flex-end');
+
+/**
+ * flex布局的集合版
+ * 横向布局：
+ * left/center/right/lr 四个值，分别代表：左对齐、居中、右对齐、左右两边对齐.垂直方向默认居中
+ * 可用class
+ * n-left n-left-top n-left-middle n-left-bottom
+ * n-center n-center-top n-center-middle n-center-bottom
+ * n-right n-right-top n-right-middle n-right-bottom
+ * n-lr n-lr-top n-lr-middle n-lr-bottom
+ * 
+ * 纵向布局：
+ * top/middle/bottom/tb 四个值，分别代表：上对齐、居中、下对齐、上下两边对齐.垂直方向默认居中
+ * 可用class
+ * n-top n-top-left n-top-center n-top-right
+ * n-middle n-middle-left n-middle-center n-middle-right
+ * n-bottom n-bottom-left n-bottom-center n-bottom-right
+ * n-tb n-tb-left n-tb-center n-tb-right
+ */
+.n {
+	@each $k, $v in $xmains {
+		&-#{$k} {
+			/* #ifndef APP-NVUE */
+			display: flex;
+			box-sizing: border-box;
+			flex-direction: row !important;
+			/* #endif */
+			/* #ifdef APP-NVUE */
+			flex-direction: row;
+			/* #endif */
+			justify-content: #{$v};
+			align-items: center;
+			
+			@each $kk, $vv in $xcolumns {
+				&-#{$kk} {
+					/* #ifndef APP-NVUE */
+					display: flex;
+					box-sizing: border-box;
+					flex-direction: row !important;
+					/* #endif */
+					/* #ifdef APP-NVUE */
+					flex-direction: row;
+					/* #endif */
+					justify-content: #{$v};
+					align-items: #{$vv};
+				}
+			}
+		}
+	}
+	
+	@each $k, $v in $ymains {
+		&-#{$k} {
+			/* #ifndef APP-NVUE */
+			display: flex;
+			box-sizing: border-box;
+			flex-direction: column !important;
+			/* #endif */
+			/* #ifdef APP-NVUE */
+			flex-direction: column;
+			/* #endif */
+			justify-content: #{$v};
+			align-items: center;
+			
+			@each $kk, $vv in $ycolumns {
+				&-#{$kk} {
+					/* #ifndef APP-NVUE */
+					display: flex;
+					box-sizing: border-box;
+					flex-direction: column !important;
+					/* #endif */
+					/* #ifdef APP-NVUE */
+					flex-direction: column;
+					/* #endif */
+					justify-content: #{$v};
+					align-items: #{$vv};
+				}
+			}
+		}
+	}
+}
