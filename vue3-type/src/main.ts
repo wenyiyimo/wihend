@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router/router'
 import store, { State } from './store/store';
 import { http } from './http/http'
-
 // 加载UI库, 引入后组件会被全局注册, 我们在任意组件内都可以直接使用
 /*import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.less'*/

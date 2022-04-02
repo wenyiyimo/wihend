@@ -4,7 +4,7 @@
       <a-input v-model="form.name" placeholder="请输入手机号" />
     </a-form-item>
     <a-form-item :validate-trigger="['input','blur']" field="passWord" :rules="passRules" label="密码">
-      <a-input v-model="form.passWord" placeholder="请输入密码" />
+      <a-input-password v-model="form.passWord" placeholder="请输入密码" />
     </a-form-item>
     <a-form-item field="isRead">
       <a-checkbox v-model="form.isRead">
@@ -21,13 +21,14 @@
 </template>
 
 <script>
+import { http, setHttpToken, clearHttpToken } from "../http/http";
 export default {
   name: "from",
   data() {
     return {
       form: {
-        name: '',
-        passWord: '',
+        name: '15727527694',
+        passWord: '12345678',
         isRead: false,
       },
       passRules:[{
@@ -55,7 +56,18 @@ export default {
   },
   methods:{
     async handleSubmit(data) {
+      try {
+        const response = await http.post(
+          "api/user/UserIndex/login",
+          this.form
+        );
+        const { token } = response.data;
+        // 存储token
+        setHttpToken(token);
+        // this.$message.success("登陆成功");
+      } catch (error) {
 
+      }
     }
   }
 }
