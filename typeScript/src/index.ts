@@ -57,7 +57,7 @@ interface a {
     (a: string): string;
 }
 type b = (a: string) => string;
-const c: a = (val) => val;
+const cc: a = (val) => val;
 //3、使用type联合接口 联合类型
 interface Cat {
     hand: string;
@@ -212,14 +212,6 @@ let record5:records = {
 }
 
 
-document.body.addEventListener('click', e=>{
-  	// 报错, 因为e.target的类型是EventTarget, 其上没有innerHTML
-    // e.target.innerHTML = 'test'; 
-    // 正确
-    (e.target as HTMLElement).innerHTML = 'test';
-    // 等价
-    (<HTMLElement>e.target).innerHTML = 'test';
-});
 
 
 
