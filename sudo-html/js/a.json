@@ -1,0 +1,7 @@
+{
+  "name": "国海良时期货",
+  "brokerId": "0207",//期货公司代码
+  "dept": "200",//营业部代码
+  "img": "https://www.tzqc.net/images/default/app/unit-dy.png",
+  "isOpen":1
+}

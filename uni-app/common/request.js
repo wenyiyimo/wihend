@@ -21,56 +21,7 @@ const config = {
 // 设置自己的请求拦截器，必须加上 `async`
 // 请求前的拦截，比如是否登录/过期/刷新token/...
 const reqInterceptor = async (options) => {
-	const authType = options.authType || 'Bearer'
-	delete options.authType
-	// if it allows token/non-token to return diff response
-	// the default is we can not toggle
-	const toggle = options.toggle || false
-	delete options.toggle
 	
-	// we must copy the global header-config since the header is just override
-	options.header = Object.assign({}, config.header, options.header||{})
-	// here we add auth interceptor
-	const app = getApp({allowDefault: true})
-	const access = app.globalData.access
-	const accessExpired = isAccessExpired()
-	const refreshExpired = isRefreshExpired()
-	if (authType === 'None') {
-		if (options.header.Authorization) {
-			delete options.header.Authorization
-		}
-		_requestLog(options, "None Auth Type")
-		return options
-	}
-	// need auth, or it could be toggle. if have token, we must write token into header
-	if (accessExpired) {
-		if (refreshExpired) {
-			delete options.header.Authorization
-			if (!toggle) {
-				uni.$emit("logedOut")
-				_requestLog(options, "ac/rf都已经过期，且不能匿名访问，需要重新登录")
-				// return object with nReqToCancel:true key-value
-				return {nReqToCancel: true, text: '请求未通过验证,检查是否登录或者数据正确', type: 'warning'}
-			}
-		} else {
-			try{
-				const acc = await _toRefreshAccess()
-				options.header.Authorization = authType + ' ' + access
-			}catch(e){
-				// TODO: handler error to refresh token
-				delete options.header.Authorization
-				if (!toggle) {
-					uni.$emit("logedOut")
-					_requestLog(options, "刷新ac失败，且不能匿名访问，需要重新登录")
-					return {nReqToCancel: true, text: '请求未通过验证,检查是否登录或者数据正确', type: 'warning'}
-				}
-			}
-		}
-	} else {
-		options.header = Object.assign({}, options.header, {
-			Authorization: authType + ' ' + access
-		})
-	}
 	_requestLog(options, "成功通过")
 	return options
 }

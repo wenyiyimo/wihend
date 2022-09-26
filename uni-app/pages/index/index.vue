@@ -9,6 +9,7 @@
 
 <script>
   import {mapGetters} from 'vuex'
+  import request from '@/common/request.js'
 	export default {
 		data() {
 			return {
@@ -23,9 +24,18 @@
 		},
 		methods: {
       toLogin(){
-        uni.navigateTo({
-          url:"/pages/login/login"
+        request.request({
+          url: '/api/user/UserIndex/login',
+          data: {name: 'nickname'},
+          method: 'POST'
+        }).then(res => {
+          // success
+        }).catch(err => {
+          // error
         })
+        /* uni.navigateTo({
+          url:"/pages/login/login"
+        }) */
       }
 		}
 	}

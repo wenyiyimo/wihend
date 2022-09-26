@@ -11,6 +11,7 @@ const RefreshExpireTime = 2588400000 // 30d-1h
 // the file is loaded, then app inited
 // const app = getApp({allowDefault: true})
 
+//访问是否过期
 export function isAccessExpired() {
 	const app = getApp({allowDefault: true})
 	const nowTime = Date.now()
@@ -23,6 +24,7 @@ export function isAccessExpired() {
 	return true
 }
 
+//刷新过期了吗
 export function isRefreshExpired() {
 	const app = getApp({allowDefault: true})
 	const nowTime = Date.now()
@@ -35,6 +37,7 @@ export function isRefreshExpired() {
 	return true
 }
 
+//检索令牌信息
 export function retrieveTokenInfo() {
 	const app = getApp({allowDefault: true})
 	try {
@@ -59,6 +62,7 @@ export function retrieveTokenInfo() {
 	}
 }
 
+//更新访问权限
 export function updateAccess(access) {
 	const app = getApp({allowDefault: true})
 	if (access) {
@@ -97,6 +101,8 @@ export function updateAccess(access) {
 	}
 }
 
+
+//更新访问刷新
 export function updateAccessRefresh(access, refresh) {
 	const app = getApp({allowDefault: true})
 	const time = Date.now()

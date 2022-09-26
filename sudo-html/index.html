@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body onclick="to()" class="body">
+<div style="background-color: antiquewhite;height: 5000px">
+    <div class="sd" style="height: 200px;background-color: aquamarine;margin-top: 500px"></div>
+
+</div>
+</body>
+<!--<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>-->
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+<script src="js/b.js"></script>
+<script>
+    /*$.ajax({
+        url: './js/a.json',
+        type: "GET",
+        dataType: "jsonp",
+        success(e) {
+            console.log(e);
+        }
+    })*/
+
+    function setSession(key, value) {
+        sessionStorage.setItem(key, value);
+    }
+
+    function getSession(key) {
+        return sessionStorage.getItem(key);
+    }
+
+    function removeSession(key) {
+        sessionStorage.removeItem(key);
+    }
+
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function deleteCookie(name) {
+        setCookie(name, "", -1);
+    }
+
+    function getCookie(name) {
+        let value = "; " + document.cookie;
+        let parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+
+    setCookie('name', 'value', 1);
+    console.log(getCookie('name'));
+    deleteCookie('name');
+
+    // console.log(document.getElementsByClassName('sd')[0].offsetTop)
+    // window.scrollTo({
+    //     top: document.getElementsByClassName('body')[0].offsetTop
+    // })
+    /* document.getElementsByClassName('sd').scrollTop = 300 + 'px'
+
+    function to() {
+        window.scrollTo(1000, 500);
+    }
+    setTimeout(function () {
+        window.scrollTo(0, 300);
+    }, 1000) */
+
+    /* $("html, body").animate({
+         scrollTop: $(".sd").offset().top - 50 + "px"
+     }, {duration: 500, easing: "swing"});*/
+    // window.scrollTo(0, document.getElementsByClassName('sd')[0].scrollHeight)
+    /* axios.post('http://10.1.1.10/api/user/UserIndex/login')
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    var a = [1, 2, 3, 4, 5]
+    var b = []
+    a.forEach((item) => {
+        b.push(item)
+    }) */
+</script>
+</html>

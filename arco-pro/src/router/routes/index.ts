@@ -11,5 +11,5 @@ Object.keys(modules).forEach((key) => {
     : [defaultModule];
   appRoutes.push(...moduleList);
 });
-
+console.log(appRoutes);
 export default appRoutes;

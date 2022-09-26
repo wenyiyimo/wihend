@@ -10,10 +10,11 @@ export interface HttpResponse<T = unknown> {
   data: T;
 }
 
+
 if (import.meta.env.VITE_API_BASE_URL) {
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 }
-
+// 发送请求之前，添加拦截器
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     // let each request carry token

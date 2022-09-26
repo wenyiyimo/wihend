@@ -1,21 +1,19 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router/router'
-import store, { State } from './store/store';
-import { http } from './http/http'
+import routerView from './router'
+import i18n from './loacle'
+import './http/http';
+import store from './store';
 // 加载UI库, 引入后组件会被全局注册, 我们在任意组件内都可以直接使用
-/*import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.less'*/
 import ArcoVue from '@arco-design/web-vue';
+import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import '@arco-design/web-vue/dist/arco.css';
 
 const app = createApp(App);
-
-app.use(router);
-app.use(store);
+app.use(routerView);
 app.use(ArcoVue);
-// 组件内可以使用this.$http表示http变量(axios)
-app.config.globalProperties.$http = http;
-
+app.use(ArcoVueIcon);
+app.use(i18n);
+app.use(store);
 
 app.mount('#app');

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas width="300" height="100"></canvas>
+    <div><input type="range" min="-10" max="15" value="0" style="width:300px;"></div>
+    <script>
+      
+      
+      
+      
+      /**
+      * @author zhangxinxu(.com)
+      * @licence MIT
+      * @description http://www.zhangxinxu.com/wordpress/?p=7362
+      */
+      CanvasRenderingContext2D.prototype.letterSpacingText = function (text, x, y, letterSpacing) {
+          var context = this;
+          var canvas = context.canvas;
+          
+          if (!letterSpacing && canvas) {
+              letterSpacing = parseFloat(window.getComputedStyle(canvas).letterSpacing);
+          }
+          if (!letterSpacing) {
+              return this.fillText(text, x, y);
+          }
+          
+          var arrText = text.split('');
+          var align = context.textAlign || 'left';
+          
+          // 这里仅考虑水平排列
+          var originWidth = context.measureText(text).width;
+          console.log('originWidth--',originWidth);
+          console.log('letterSpacing--',letterSpacing);
+          // 应用letterSpacing占据宽度
+          var actualWidth = originWidth + letterSpacing * (arrText.length - 1);
+          console.log('actualWidth--',actualWidth);
+          // 根据水平对齐方式确定第一个字符的坐标
+          if (align == 'center') {
+              x = x - actualWidth / 2;
+          } else if (align == 'right') {
+              x = x - actualWidth;
+          }
+          
+          // 临时修改为文本左对齐
+          context.textAlign = 'left';
+          // 开始逐字绘制
+          arrText.forEach(function (letter) {
+              var letterWidth = context.measureText(letter).width;
+              console.log(letterWidth);
+              context.fillText(letter, x, y);
+              // 确定下一个字符的横坐标
+              x = x + letterWidth + letterSpacing;
+          });
+          // 对齐方式还原
+          context.textAlign = align;
+      };
+      
+      
+      // letterSpacingText扩展方法详见页面源代码
+      // 下面是测试使用JS代码
+      var range = document.querySelector('input[type]');
+      var canvas = document.querySelector('canvas');    
+      var context = canvas.getContext('2d');
+      context.font = '32px sans-serif';
+      context.textAlign = 'center';
+      // 绘制方法
+      var draw = function () {
+          // 清除之前的绘制
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          // 字符间距设置
+          canvas.style.letterSpacing = range.value + 'px';
+          // 根据字符间距绘制文本
+          context.letterSpacingText('我是一段文本', canvas.width / 2, 50);
+      };
+      // 改变字符间距后重绘
+      range.addEventListener('change', draw);
+      // 一进来根据默认值绘制
+      draw();
+      
+    </script>
+  </body>
+</html>

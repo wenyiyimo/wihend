@@ -17,8 +17,6 @@
 
 <script lang="ts">
 import {ref, reactive, toRefs, watch} from 'vue'
-import useURLAxios from "../hooks/useURLAxios";
-import useUrlAxios from "../hooks/useURLAxios";
 interface dataPore{
   girls:string[];
   youLike:string,
@@ -40,11 +38,6 @@ export default ({
       result:null
     })
 
-
-    watch(()=>data.youLike,(newVal,oldVal)=>{
-      const {loading,loaded,result} = useUrlAxios('https://apiblog.jspang.com/default/getGirl')
-      img.result = result.value
-    })
 
     const dataRefs = toRefs(data)
     const imgRefs = toRefs(img)

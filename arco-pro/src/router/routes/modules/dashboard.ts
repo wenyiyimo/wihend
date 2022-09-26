@@ -19,7 +19,6 @@ export default {
         roles: ['*'],
       },
     },
-
     {
       path: 'monitor',
       name: 'Monitor',
